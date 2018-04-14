@@ -1,24 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="javac" default="compile">
-	<target name="clean">
-		<delete dir="build/classes" />
-	</target>
-	<target name="compile" depends="clean">
-		<mkdir dir="build/classes" />
-		<javac srcdir="src" destdir="build/classes" />
-	</target>
-	<!-- <target name="run" depends="compile">
-		<java classname="${classname}">
-			<classpath>
-				<pathelement path="build/classes" />
-			</classpath>
-		</java>
-	</target> -->
-	<!-- <target name="jar" depends="run">
-		<jar destfile="test.jar" basedir="build/classes">
-			<manifest>
-				<attribute name="Main-class" value="test"/>
-			</manifest>
-		</jar>
-	</target> -->
+<project name="JunitTest" default="test" basedir=".">
+   <property name="testdir" location="test" />
+   <property name="srcdir" location="src" />
+   <!-- path是ant内置的一种datatype，作用是声明路径之类的东西 -->
+   <path id="classpath.base" />
+   <path id="classpath.test">
+      <pathelement location="/lib/junit-4.10.jar" />
+      <pathelement location="${testdir}" />
+      <pathelement location="${srcdir}" />
+      <path refid="classpath.base" />
+   </path>
+   <target name="clean" >
+      <delete>
+         <fileset dir="${testdir}" />
+      </delete>
+   </target>
+   <target name="compile" depends="clean">
+      <javac srcdir="${srcdir}" destdir="${testdir}">
+         <classpath refid="classpath.test"/>
+      </javac>
+   </target>
+   <target name="test" depends="compile">
+      <junit>
+         <classpath refid="classpath.test" />
+         <formatter type="brief" usefile="false" />
+         <test name="HelloWorldTest" />
+      </junit>
+   </target>
 </project>
