@@ -1,0 +1,4 @@
+cd /opt/resources/grid\ world/GridWorldCode/projects/firstProject
+javac -classpath .:/opt/resources/grid\ world/GridWorldCode/gridworld.jar *.java
+java -classpath .:/opt/resources/grid\ world/GridWorldCode/gridworld.jar BugRunner
+

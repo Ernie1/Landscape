@@ -1,0 +1,7 @@
+cd $SONAR_HOME
+./sonar.sh start
+localhost:9000
+cd ~/Desktop/calculator/
+sonar-runner
+cd $SONAR_HOME
+./sonar.sh stop
