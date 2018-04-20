@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry excluding="Part2/ZBug/|Part3/|Part2/DancingBug/|critters/|Part2/SpiralBug/|boxBug/|firstProject/|Part2/CircleBug/" kind="src" path=""/>
 	<classpathentry kind="src" path="boxBug"/>
 	<classpathentry kind="src" path="critters"/>
 	<classpathentry kind="src" path="firstProject"/>
-	<classpathentry kind="src" path="CircleBug"/>
-	<classpathentry kind="src" path="DancingBug"/>
-	<classpathentry kind="src" path="SpiralBug"/>
-	<classpathentry kind="src" path="ZBug"/>
+	<classpathentry kind="src" path="Part2/CircleBug"/>
+	<classpathentry kind="src" path="Part2/DancingBug"/>
+	<classpathentry kind="src" path="Part2/SpiralBug"/>
+	<classpathentry kind="src" path="Part2/ZBug"/>
 	<classpathentry kind="src" path="Part3"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
@@ -18,6 +19,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/zjq/Desktop/Landscape/阶段1：项目启动/gridworld/GridWorldCode/gridworld.jar"/>
+	<classpathentry kind="lib" path="/Users/zjq/Desktop/Landscape/gridworld/GridWorldCode/gridworld.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
