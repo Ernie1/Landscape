@@ -34,7 +34,11 @@ public class DancingBug extends Bug
     public DancingBug(int [] param)
     {
         steps = 0;
-        turnTime = param;
+        turnTime = new int[param.length];
+        for(int i = 0; i < param.length; ++i)
+        {
+            turnTime[i] = param[i];
+        }
     }
 
     /**
@@ -43,7 +47,7 @@ public class DancingBug extends Bug
     public void act()
     {
         for(int i = 0; i < turnTime[steps%turnTime.length]; ++i) {
-        	turn();
+            turn();
         }
         ++steps;
         super.act();

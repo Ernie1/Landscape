@@ -223,3 +223,8 @@ getOccupiedLocations | $O(r+n)$ | $O(r+n)$ | $O(n)$ | $O(n)$
 get | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
 put | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
 remove | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
+##Consider an implementation of an unbounded grid in which all valid locations have non-negative row and column values. The constructor allocates a 16 x 16 array. When a call is made to the put method with a row or column index that is outside the current array bounds, double both array bounds until they are large enough, construct a new square array with those bounds, and place the existing occupants into the new array.
+Implement the methods specified by the Grid interface using this data structure. What is the Big-Oh efficiency of the get method? What is the efficiency of the put method when the row and column index values are within the current array bounds? What is the efficiency when the array needs to be resized?
+$O(1)$ get  
+$O(1)$ put method when the row and column index values are within the current array bounds  
+$O(n^{2})$ put method when the array needs to be resized，对二维数组的遍历，n为resize前矩阵的行数（列数）。
