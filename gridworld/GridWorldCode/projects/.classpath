@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="Part2/ZBug/|Part3/|Part2/DancingBug/|critters/|Part2/SpiralBug/|boxBug/|firstProject/|Part2/CircleBug/" kind="src" path=""/>
+	<classpathentry excluding="Part2/ZBug/|Part3/|Part2/DancingBug/|critters/|Part2/SpiralBug/|boxBug/|firstProject/|Part2/CircleBug/|Part5/|Part5/1/|Part5/2/|Part5/3/" kind="src" path=""/>
 	<classpathentry kind="src" path="boxBug"/>
 	<classpathentry kind="src" path="critters"/>
 	<classpathentry kind="src" path="firstProject"/>
@@ -9,6 +9,10 @@
 	<classpathentry kind="src" path="Part2/SpiralBug"/>
 	<classpathentry kind="src" path="Part2/ZBug"/>
 	<classpathentry kind="src" path="Part3"/>
+	<classpathentry excluding="1/|1/|2/|2/|3/|3/" kind="src" path="Part5"/>
+	<classpathentry kind="src" path="Part5/1"/>
+	<classpathentry kind="src" path="Part5/2"/>
+	<classpathentry kind="src" path="Part5/3"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

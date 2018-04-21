@@ -208,3 +208,18 @@ getOccupiedLocations中对occupants元素遍历的顺序不同，HashMap遍历�
 可以  
 map的优点是getOccupiedLocations方法的时间复杂度会下降到$O(n)$，n为occupants的个数  
 二维数组的优点是当grid的occupants稠密时比map节省空间，因为map要给每个occupant存位置信息而二维数组不用
+### Consider using a HashMap or TreeMap to implement the SparseBoundedGrid. How could you use the UnboundedGrid class to accomplish this task? Which methods of UnboundedGrid could be used without change?
+Fill in the following chart to compare the expected Big-Oh efficiencies for each implementation of the SparseBoundedGrid.
+Let r = number of rows, c = number of columns, and n = number of occupied locations
+改写UnboundedGrid的一部分方法  
+getOccupiedLocations, get, put, remove  
+
+Methods | SparseGridNode version | LinkedList <OccupantInCol> version | HashMap version | TreeMap version
+--- | --- | --- | --- | ---
+getNeighbors | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
+getEmptyAdjacentLocations | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
+getOccupiedAdjacentLocations | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
+getOccupiedLocations | $O(r+n)$ | $O(r+n)$ | $O(n)$ | $O(n)$
+get | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
+put | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
+remove | $O(c)$ | $O(c)$ | $O(1)$ | $O(log n)$
