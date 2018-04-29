@@ -21,17 +21,12 @@ import imagereader.IImageIO;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.awt.image.MemoryImageSource;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-//import 
-
-import javax.imageio.ImageIO;
 
 public class ImplementImageIO implements IImageIO {
 	private int lastMark;
