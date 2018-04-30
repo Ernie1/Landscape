@@ -31,7 +31,7 @@ public class RunnerPart2 {
         // JigsawNode startNode = new JigsawNode(new int[]{19,8,7,9,23,10,3,19,5,4,14,2,20,11,6,15,22,13,16,0,1,21,12,18,24,17});
 
         // 生成jigsaw对象：设置初始状态节点startNode和目标状态节点destNode
-        Jigsaw jigsaw = new Solution(startNode, destNode);
+        Jigsaw jigsaw = new Solution();
 
         // 执行启发式搜索示例算法
         jigsaw.ASearch(startNode, destNode);

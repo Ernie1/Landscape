@@ -28,7 +28,7 @@ public class RunnerPart1 {
         JigsawNode startNode = new JigsawNode(new int[]{5,1,5,2,7,0,4,6,3,8});
 
         // 生成jigsaw对象：设置初始状态节点startNode和目标状态节点destNode
-        Jigsaw j = new Solution(startNode, destNode);
+        Jigsaw j = new Solution();
 
         // 执行广度优先搜索算法
         j.BFSearch(startNode, destNode);
