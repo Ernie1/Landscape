@@ -4,11 +4,13 @@ import info.gridworld.actor.Actor;
 import info.gridworld.actor.Bug;
 import info.gridworld.actor.Flower;
 import info.gridworld.actor.Rock;
-import info.gridworld.grid.Grid;
-import info.gridworld.grid.Location;
+import info.gridworld.grid.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
@@ -17,322 +19,172 @@ import javax.swing.JOptionPane;
  * A <code>MazeBug</code> can find its way in a maze. <br />
  * The implementation of this class is testable on the AP CS A and AB exams.
  */
-public class MazeBug extends Bug
-{
-    public Location next;
-    public Location last;
-    public boolean isEnd = false;
+public class MazeBug extends Bug {
+	// 记录下一步要行走到的位置
+	public Location next;
+	// 记录上一步的位置，便于在走到死路尽头时返回
+	public Location last;
+	public boolean isEnd = false;
+	/**
+	 * 记录树的节点的栈 ArrayList[0]是访问过的，ArrayList[>0]是未访问的，当没有>0的就要走并pop
+	 */
+	public Stack<ArrayList<Location>> crossLocation = new Stack<ArrayList<Location>>();
 
-    // each ArrayList<Location> contains <src, visiterA, visitedB...(4 dirs)>
-    // hence the name cross(+) location.
-    public Stack<ArrayList<Location>> crossLocation = new Stack<ArrayList<Location>>();
-    public Integer stepCount = 0;
-    boolean hasShown = false;//final message has been shown
+	private final int[] dir4 = { Location.NORTH, Location.EAST, Location.SOUTH, Location.WEST };
+	private final int[] dir3 = { Location.LEFT, Location.AHEAD, Location.RIGHT };
+	private int[] countDir3 = { 0, 0, 0 };
 
-    // number of times the direction is chosen
-    // 0 - NORTH, 1 - EAST, 2 - SOUTH, 3 - WEST
-    int[] dirCount = { 0, 0, 0, 0 };
-    int[] validDirections = { Location.NORTH, Location.EAST, Location.SOUTH,
-            Location.WEST };
+	// 记录本迷宫走到出口所用的步数
+	public Integer stepCount = 0;
+	boolean hasShown = false;// final message has been shown
 
-    /**
-     * Constructs a box bug that traces a square of a given side length
-     *
-     * @param length
-     *            the side length
-     */
-    public MazeBug()
-    {
-        setColor(Color.GREEN);
+	// private Map<Location, Boolean> visited;
 
-    }
+	/**
+	 * Constructs a box bug that traces a square of a given side length
+	 * 
+	 * @param length
+	 *            the side length
+	 */
+	public MazeBug() {
+		setColor(Color.GREEN);
+		// last = new Location(0, 0);
 
-    /**
-     * Move or go back.
-     */
-    @Override
-    public void act()
-    {
-        if (stepCount == 0)
-        {
-            last = getLocation();
-            //  push <(0,0)> into the stack
-            ArrayList<Location> firstCross = new ArrayList<Location>();
-            firstCross.add(last);
-            crossLocation.push(firstCross);
-        }
+		// visited = new HashMap<Location, Boolean>();
+	}
 
-        boolean willMove = canMove();
+	/**
+	 * Moves to the next location of the square. 虫子行动函数，每走一步会加一点步数，找到出口时显示步数
+	 */
+	public void act() {
+		boolean willMove = canMove();
+		if (isEnd == true) {
+			// to show step count when reach the goal
+			if (hasShown == false) {
+				String msg = stepCount.toString() + " steps";
+				JOptionPane.showMessageDialog(null, msg);
+				hasShown = true;
+			}
+		} else if (willMove) {
+			move();
+			// increase step count when move
+			stepCount++;
+		}
+	}
 
-        if (isEnd)
-        {
-            //to show step count when reach the goal
-            if (!hasShown)
-            {
-                String msg = stepCount.toString() + " steps";
-                JOptionPane.showMessageDialog(null, msg);
-                hasShown = true;
-            }
-        }
-        else if (willMove)
-        {
-            move();
-            //increase step count when move
-            stepCount++;
-        }
-        else
-        {  // not the end but can't move
-            back();
-            stepCount++;
-        }
+	/**
+	 * Find all positions that can be move to. 寻找可行走方向
+	 * 
+	 * @param loc
+	 *            the location to detect.
+	 * @return List of positions.
+	 */
+	public ArrayList<Location> getValid(Location loc) {
+		Grid<Actor> gr = getGrid();
+		if (gr == null)
+			return null;
+		ArrayList<Location> valid = new ArrayList<>();
 
-    }
+		return valid;
+	}
 
-    /**
-     * Find all positions that can be move to.
-     * Visted locations are excluded.
-     *
-     * @param loc
-     *            the location to detect.
-     * @return List of positions.
-     */
-    public ArrayList<Location> getValid(Location loc)
-    {
-        Grid<Actor> gr = getGrid();
-        if (gr == null)
-        {
-            return null;
-        }
-        ArrayList<Location> valid = new ArrayList<Location>();
+	/**
+	 * Tests whether this bug can move forward into a location that is empty or
+	 * contains a flower. 判断是否可以行走
+	 * 
+	 * @return true if this bug can move.
+	 */
+	public boolean canMove() {
+		Grid<Actor> gr = getGrid();
+		if (gr == null)
+			return false;
+		if (stepCount == 0) {
+			last = next = getLocation();
+			setNext();
+		}
 
-        // return an empty list if the stack is empty
-        if (crossLocation.size() <= 0)
-        {
-            return valid;
-        }
+		// for (int i = 0; i < 4; ++i) {
+		// if (crossLocation.peek().get(i) == null)
+		// System.out.println("null");
+		// else {
+		// System.out.print(crossLocation.peek().get(i).getCol());
+		// System.out.print(",");
+		// System.out.println(crossLocation.peek().get(i).getRow());
+		// }
+		// }
+		// System.out.println();
 
-        //  check each of the 4 directions
-        for (int d : validDirections)
-        {
-            Location check = loc.getAdjacentLocation(d);
+		// 暂先按顺序
+		for (int i = 1; i < 4; ++i) {
+			if (crossLocation.peek().get(i) != null) {
+				last = crossLocation.peek().get(0); // == getLocation()
+				next = crossLocation.peek().get(i);
+				crossLocation.peek().set(i, null);
+				setNext();
+				return true;
+			}
+		}
 
-            // if it is out of the grid, skip
-            if (!gr.isValid(check))
-            {
-                continue;
-            }
+		crossLocation.pop();
+		if (crossLocation.empty()) {
+			return false;
+		}
 
-            Actor neighbor = gr.get(check);
-            //  if it is null, add it
-            if (neighbor == null)
-            {
-                valid.add(check);
-            }
-            //  if it is a red rock, add it
-            else if (neighbor instanceof Rock
-                    && neighbor.getColor().equals(Color.RED))
-            {
-                valid.add(check);
-            }
-            // if it is a flower i.e. visited, don't add it
-        }
+		last = getLocation();
+		next = crossLocation.peek().get(0);
+		return true;
+	}
 
-        return valid;
-    }
+	private void setNext() {
+		Grid<Actor> gr = getGrid();
+		if(gr.get(next) instanceof Rock && gr.get(next).getColor().equals(Color.RED)) {
+			isEnd = true;
+			return;
+		}
+		ArrayList<Location> arrayList = new ArrayList<>();
+		arrayList.add(next);
+		crossLocation.push(arrayList);
+		for (int j = 1; j < 4; ++j) {
+			Location choice = next.getAdjacentLocation(getLocation().getDirectionToward(next) + dir3[j - 1]);
+			if (gr.isValid(choice)) {
+				if (!(gr.get(choice) instanceof Rock)) {
+					crossLocation.peek().add(choice);
+				} else if (gr.get(choice).getColor().equals(Color.RED)) {
+					crossLocation.peek().add(choice);
+					// 去掉其他方向
+					for (int i = 1; i < j; ++i) {
+						crossLocation.peek().set(i, null);
+					}
+					for (int i = j + 1; i < 4; ++i) {
+						crossLocation.peek().add(null);
+					}
+					break;
+				} else {
+					crossLocation.peek().add(null);
+				}
+			} else {
+				crossLocation.peek().add(null);
+			}
+		}
+	}
 
-    /**
-     * Tests whether this bug can move forward into a location that is empty or
-     * contains a flower.
-     *
-     * @return true if this bug can move.
-     */
-    @Override
-    public boolean canMove()
-    {
-        //  get valid adjacent locations
-        Location loc = getLocation();
-        ArrayList<Location> valid = getValid(loc);
-
-        // if there is no valid location around
-        if (valid.size() <= 0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    /**
-     * Pick the next location to move from current location.
-     * The red rock is picked first if it is around. Otherwise the
-     * direction with largest probability is picked.
-     *
-     * Precondition: it is in a grid.
-     * Postcondition:
-     * next = next location to move to
-     * last = current location
-     */
-    private void pickNext()
-    {
-        //  get valid adjacent locations
-        Grid<Actor> gr = getGrid();
-        Location loc = getLocation();
-        ArrayList<Location> valid = getValid(loc);
-
-        int maxCount = Integer.MIN_VALUE;
-        for (Location check : valid)
-        {
-            Actor neighbor = gr.get(check);
-            int dirIndex = loc.getDirectionToward(check) / Location.RIGHT;
-            //  check if the end is in them, move to the end if it is
-            if (neighbor instanceof Rock
-                    && neighbor.getColor().equals(Color.RED))
-            {
-                last = next;
-                next = check;
-                break;
-            }
-            //  choose current direction
-            if (dirIndex == getDirection() / Location.RIGHT)
-            {
-                last = next;
-                next = check;
-                break;
-            }
-            //  choose the one with max probability
-            if (dirCount[dirIndex] > maxCount)
-            {
-                maxCount = dirCount[dirIndex];
-                last = next;
-                next = check;
-            }
-        }
-
-    }
-
-    /**
-     * Moves the bug forward, putting a flower into the location it previously
-     * occupied.
-     */
-    @Override
-    public void move()
-    {
-        Grid<Actor> gr = getGrid();
-        if (gr == null)
-        {
-            return;
-        }
-
-        // pick next location (via field next and last)
-        // assert: canMove -- getValid.size != 0 -- next != here
-        pickNext();
-
-        if (!gr.isValid(next))
-        {
-            removeSelfFromGrid();
-            return;
-        }
-
-        // if the end is reached, mark it
-        Actor nextActor = gr.get(next);
-        if (nextActor instanceof Rock)
-        {
-            isEnd = true;
-        }
-
-        // move to the next location
-        Location loc = getLocation();
-        int oldDir = getDirection();
-        int moveDir = loc.getDirectionToward(next);
-        int backDir = (moveDir + Location.HALF_CIRCLE) % Location.FULL_CIRCLE;
-
-        setDirection(loc.getDirectionToward(next));
-        moveTo(next);
-
-        //  increase the probability for this direction
-        if (oldDir == moveDir)
-        {
-            dirCount[backDir / Location.RIGHT]--;
-        }
-
-        dirCount[moveDir / Location.RIGHT]++;
-
-        // drop flower at the previous location
-        dropFlower(loc);
-
-        //  add next to the end of the top linked list (visited from here)
-        // <loc, ..., next>
-        crossLocation.peek().add(next);
-
-        //  push a new <(next)> into the stack
-        // now the top looks like
-        // <next>
-        // <loc, ..., next>
-        ArrayList<Location> newTop = new ArrayList<Location>();
-        newTop.add(next);
-        crossLocation.push(newTop);
-    }
-
-    /**
-     * Drop flower at given location.
-     * CAUTION: if it is used with moveTo, move first, drop next.
-     *
-     * @param loc
-     *            where the flower will be drop
-     */
-    private void dropFlower(Location loc)
-    {
-        Grid<Actor> gr = getGrid();
-        if (gr == null)
-        {
-            return;
-        }
-        Flower flower = new Flower(getColor());
-        flower.putSelfInGrid(gr, loc);
-    }
-
-    /**
-     * Go back to where it come from.
-     */
-    private void back()
-    {
-        Grid<Actor> gr = getGrid();
-        if (gr == null)
-        {
-            return;
-        }
-
-        // the stack is empty, there is no way to go back
-        if (crossLocation.size() <= 0)
-        {
-            return;
-        }
-
-        Location loc = getLocation();
-
-        // pop out the top(contains current location)
-        crossLocation.pop();
-
-        // the stack is empty, there is no way to go back
-        if (crossLocation.size() <= 0)
-        {
-            return;
-        }
-
-        // get the src of top. which is [0] at
-        // the linked list one way below the top
-        next = crossLocation.peek().get(0);
-        last = loc;
-
-        int backDir = loc.getDirectionToward(next);
-        dirCount[backDir / Location.RIGHT]--;
-        // move back to src
-        setDirection(loc.getDirectionToward(next));
-        moveTo(next);
-
-        // drop flower
-        dropFlower(loc);
-    }
+	/**
+	 * Moves the bug forward, putting a flower into the location it previously
+	 * occupied. 如何行走
+	 */
+	public void move() {
+		Grid<Actor> gr = getGrid();
+		if (gr == null) {
+			return;
+		}
+		Location loc = getLocation();
+		if (gr.isValid(next)) {
+			setDirection(getLocation().getDirectionToward(next));
+			moveTo(next);
+		} else {
+			removeSelfFromGrid();
+		}
+		Flower flower = new Flower(getColor());
+		flower.putSelfInGrid(gr, loc);
+	}
 }
