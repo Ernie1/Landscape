@@ -8,9 +8,6 @@ import info.gridworld.grid.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
@@ -24,15 +21,16 @@ public class MazeBug extends Bug {
 	public Location next;
 	// 记录上一步的位置，便于在走到死路尽头时返回
 	public Location last;
+	public int lastDirection;
 	public boolean isEnd = false;
 	/**
 	 * 记录树的节点的栈 ArrayList[0]是访问过的，ArrayList[>0]是未访问的，当没有>0的就要走并pop
 	 */
 	public Stack<ArrayList<Location>> crossLocation = new Stack<ArrayList<Location>>();
+	public Stack<Integer> directionRecord = new Stack<>();
 
-	private final int[] dir4 = { Location.NORTH, Location.EAST, Location.SOUTH, Location.WEST };
-	private final int[] dir3 = { Location.LEFT, Location.AHEAD, Location.RIGHT };
-	private int[] countDir3 = { 0, 0, 0 };
+	private final int[] dir3 = { Location.LEFT, Location.AHEAD, Location.RIGHT, Location.HALF_CIRCLE };
+	private int[] countDir3 = { 50, 50, 50, 50 };
 
 	// 记录本迷宫走到出口所用的步数
 	public Integer stepCount = 0;
@@ -48,8 +46,8 @@ public class MazeBug extends Bug {
 	 */
 	public MazeBug() {
 		setColor(Color.GREEN);
+		stepCount = 0;
 		// last = new Location(0, 0);
-
 		// visited = new HashMap<Location, Boolean>();
 	}
 
@@ -81,8 +79,9 @@ public class MazeBug extends Bug {
 	 */
 	public ArrayList<Location> getValid(Location loc) {
 		Grid<Actor> gr = getGrid();
-		if (gr == null)
+		if (gr == null) {
 			return null;
+		}
 		ArrayList<Location> valid = new ArrayList<>();
 
 		return valid;
@@ -96,38 +95,84 @@ public class MazeBug extends Bug {
 	 */
 	public boolean canMove() {
 		Grid<Actor> gr = getGrid();
-		if (gr == null)
+		if (gr == null) {
 			return false;
+		}
 		if (stepCount == 0) {
 			last = next = getLocation();
 			setNext();
 		}
 
-		// for (int i = 0; i < 4; ++i) {
-		// if (crossLocation.peek().get(i) == null)
-		// System.out.println("null");
-		// else {
-		// System.out.print(crossLocation.peek().get(i).getCol());
-		// System.out.print(",");
-		// System.out.println(crossLocation.peek().get(i).getRow());
-		// }
-		// }
-		// System.out.println();
-
-		// 暂先按顺序
-		for (int i = 1; i < 4; ++i) {
+		System.out.println("<------------------------------");
+		for (int i = 0; i < 5; ++i) {
+			if (crossLocation.peek().get(i) == null) {
+				System.out.println("null!");
+			} else {
+				System.out.print(crossLocation.peek().get(i).getRow());
+				System.out.print(",");
+				System.out.println(crossLocation.peek().get(i).getCol());
+			}
+		}
+		System.out.println("countDir3: " + countDir3[0] + " " + countDir3[1] + " " + countDir3[2]);
+		double[] proDir3 = { 0, 0, 0, 0 };
+		double proSum = 0;
+		for (int i = 1; i < 5; ++i) {
 			if (crossLocation.peek().get(i) != null) {
-				last = crossLocation.peek().get(0); // == getLocation()
-				next = crossLocation.peek().get(i);
-				crossLocation.peek().set(i, null);
-				setNext();
-				return true;
+				// System.out.println("countDir3[" + i + "-1]: " + countDir3[i - 1]);
+				proSum += countDir3[i - 1];
+				proDir3[i - 1] = proSum;
 			}
 		}
 
+		System.out.println(proSum);
+		System.out.println("------------------------------>\n");
+		if (proSum != 0) {
+			lastDirection = getDirection();
+			// 根据概率
+			proSum *= Math.random();
+			// System.out.println(proDir3[0]+" "+proDir3[1]+" "+proDir3[2]+" "+proSum);
+			// System.out.println(countDir3[0]+" "+countDir3[1]+" "+countDir3[2]);
+			// System.out.println();
+			for (int i = 1; i < 5; ++i) {
+				if (proDir3[i - 1] >= proSum) {
+					++countDir3[i - 1];
+					last = crossLocation.peek().get(0); // == getLocation()
+					next = crossLocation.peek().get(i);
+					crossLocation.peek().set(i, null);
+					setNext();
+					return true;
+				}
+			}
+		}
+
+		// 回退
 		crossLocation.pop();
+		int past = directionRecord.peek();
+		directionRecord.pop();
+
 		if (crossLocation.empty()) {
 			return false;
+		}
+
+		int tem = past - directionRecord.peek();
+		while (tem < 0) {
+			tem += 360;
+		}
+		while (tem > 360) {
+			tem -= 360;
+		}
+		if (tem == 270) {
+			if (countDir3[0] > 1) {
+				--countDir3[0];
+			}
+		} else if (tem == 0) {
+			if (countDir3[1] > 1) {
+				--countDir3[1];
+			}
+		} else if (tem == 90) {
+			if (countDir3[2] > 1) {
+				--countDir3[2];
+			}
 		}
 
 		last = getLocation();
@@ -137,15 +182,24 @@ public class MazeBug extends Bug {
 
 	private void setNext() {
 		Grid<Actor> gr = getGrid();
-		if(gr.get(next) instanceof Rock && gr.get(next).getColor().equals(Color.RED)) {
+		if (gr.get(next) instanceof Rock && gr.get(next).getColor().equals(Color.RED)) {
 			isEnd = true;
 			return;
 		}
 		ArrayList<Location> arrayList = new ArrayList<>();
 		arrayList.add(next);
 		crossLocation.push(arrayList);
-		for (int j = 1; j < 4; ++j) {
+
+		directionRecord.push(getLocation().getDirectionToward(next));
+		for (int j = 1; j < 5; ++j) {
 			Location choice = next.getAdjacentLocation(getLocation().getDirectionToward(next) + dir3[j - 1]);
+			// 针对开始，因为same.getDirectionToward(same)=90
+			if (getLocation().equals(next)) {
+				choice = next.getAdjacentLocation(getDirection() + dir3[j - 1]);
+			} else if (j == 4) {
+				crossLocation.peek().add(null);
+				break;
+			}
 			if (gr.isValid(choice)) {
 				if (!(gr.get(choice) instanceof Rock)) {
 					crossLocation.peek().add(choice);
@@ -155,7 +209,7 @@ public class MazeBug extends Bug {
 					for (int i = 1; i < j; ++i) {
 						crossLocation.peek().set(i, null);
 					}
-					for (int i = j + 1; i < 4; ++i) {
+					for (int i = j + 1; i < 5; ++i) {
 						crossLocation.peek().add(null);
 					}
 					break;
@@ -173,6 +227,8 @@ public class MazeBug extends Bug {
 	 * occupied. 如何行走
 	 */
 	public void move() {
+		// System.out.println(countDir3[0] + " " + countDir3[1] + " " + countDir3[2]);
+
 		Grid<Actor> gr = getGrid();
 		if (gr == null) {
 			return;
