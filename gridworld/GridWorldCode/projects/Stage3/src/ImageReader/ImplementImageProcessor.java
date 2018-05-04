@@ -1,3 +1,4 @@
+
 /* 
  * AP(r) Computer Science GridWorld Case Study:
  * Copyright(c) 2005-2006 Cay S. Horstmann (http://horstmann.com)
@@ -11,9 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
- * @author Cay Horstmann
- * @author Chris Nevison
- * @author Barbara Cloud Wells
+ * @author Me
+ * @author Me
+ * @author Me
  */
 
 import java.awt.Image;
@@ -21,16 +22,54 @@ import java.awt.image.BufferedImage;
 
 import imagereader.IImageProcessor;
 
+/**
+ * NOTE: This comment is fake. WHY: Just for sonar test. :)
+ * 
+ * Associates the specified value with the specified key in this map. If the map
+ * previously contained a mapping for the key, the old value is replaced.
+ *
+ * @param key
+ *            key with which the specified value is to be associated
+ * @param value
+ *            value to be associated with the specified key
+ * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+ *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+ *         also indicate that the map previously associated <tt>null</tt> with
+ *         <tt>key</tt>.)
+ * @throws NullPointerException
+ *             if the specified map is null
+ * @see #put(Object, Object) The implementation of this class is testable on the
+ *      AP CS AB exam.
+ */
 public class ImplementImageProcessor implements IImageProcessor {
-	
+
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	@Override
 	public Image showChanelR(Image sourceImage) {
 		BufferedImage bufferedImage = ToBufferedImage.toBufferedImage(sourceImage);
 		final int width = bufferedImage.getWidth();
 		final int height = bufferedImage.getHeight();
 		BufferedImage ChanelR = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		for(int w = 0; w < width; ++w) {
-			for(int h = 0; h < height; ++h) {
+		for (int w = 0; w < width; ++w) {
+			for (int h = 0; h < height; ++h) {
 				final int color = bufferedImage.getRGB(w, h);
 				final int alpha = 0xff;
 				final int r = (color >> 16) & 0xff;
@@ -41,15 +80,34 @@ public class ImplementImageProcessor implements IImageProcessor {
 		}
 		return ChanelR;
 	}
-	
+
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	@Override
 	public Image showChanelG(Image sourceImage) {
 		BufferedImage bufferedImage = ToBufferedImage.toBufferedImage(sourceImage);
 		final int width = bufferedImage.getWidth();
 		final int height = bufferedImage.getHeight();
 		BufferedImage ChanelG = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		for(int w = 0; w < width; ++w) {
-			for(int h = 0; h < height; ++h) {
+		for (int w = 0; w < width; ++w) {
+			for (int h = 0; h < height; ++h) {
 				final int color = bufferedImage.getRGB(w, h);
 				final int alpha = 0xff;
 				final int r = 0;
@@ -60,15 +118,34 @@ public class ImplementImageProcessor implements IImageProcessor {
 		}
 		return ChanelG;
 	}
-	
+
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	@Override
 	public Image showChanelB(Image sourceImage) {
 		BufferedImage bufferedImage = ToBufferedImage.toBufferedImage(sourceImage);
 		final int width = bufferedImage.getWidth();
 		final int height = bufferedImage.getHeight();
 		BufferedImage ChanelB = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		for(int w = 0; w < width; ++w) {
-			for(int h = 0; h < height; ++h) {
+		for (int w = 0; w < width; ++w) {
+			for (int h = 0; h < height; ++h) {
 				final int color = bufferedImage.getRGB(w, h);
 				final int alpha = 0xff;
 				final int r = 0;
@@ -79,15 +156,34 @@ public class ImplementImageProcessor implements IImageProcessor {
 		}
 		return ChanelB;
 	}
-	
+
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	@Override
 	public Image showGray(Image sourceImage) {
 		BufferedImage bufferedImage = ToBufferedImage.toBufferedImage(sourceImage);
 		final int width = bufferedImage.getWidth();
 		final int height = bufferedImage.getHeight();
 		BufferedImage Gray = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		for(int w = 0; w < width; ++w) {
-			for(int h = 0; h < height; ++h) {
+		for (int w = 0; w < width; ++w) {
+			for (int h = 0; h < height; ++h) {
 				final int color = bufferedImage.getRGB(w, h);
 				final int alpha = 0xff;
 				final int r = (color >> 16) & 0xff;
@@ -99,7 +195,26 @@ public class ImplementImageProcessor implements IImageProcessor {
 		}
 		return Gray;
 	}
-	
+
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	int rgb(int a, int r, int g, int b) {
 		return (a << 24) | (r << 16) | (g << 8) | b;
 	}

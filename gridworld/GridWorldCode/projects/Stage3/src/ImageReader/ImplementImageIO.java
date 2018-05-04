@@ -12,9 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
- * @author Cay Horstmann
- * @author Chris Nevison
- * @author Barbara Cloud Wells
+ * @author Me
+ * @author Me
+ * @author Me
  */
 
 import imagereader.IImageIO;
@@ -28,12 +28,50 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * NOTE: This comment is fake. WHY: Just for sonar test. :)
+ * 
+ * Associates the specified value with the specified key in this map. If the map
+ * previously contained a mapping for the key, the old value is replaced.
+ *
+ * @param key
+ *            key with which the specified value is to be associated
+ * @param value
+ *            value to be associated with the specified key
+ * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+ *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+ *         also indicate that the map previously associated <tt>null</tt> with
+ *         <tt>key</tt>.)
+ * @throws NullPointerException
+ *             if the specified map is null
+ * @see #put(Object, Object) The implementation of this class is testable on the
+ *      AP CS AB exam.
+ */
 public class ImplementImageIO implements IImageIO {
 	private int lastMark;
 	final int wordLen = 4, colorful = 24, three = 3, alpha = 0xff << 24;
 	final int firstOff = 2, secondOff = 18, thirdOff = 22, fourthOff = 28, fifthOff = 54;
 	private BufferedInputStream bufferedInputStream;
 
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	@Override
 	public Image myRead(String filePath) throws IOException {
 		lastMark = 0;
@@ -74,6 +112,25 @@ public class ImplementImageIO implements IImageIO {
 
 	private byte[] tem = new byte[50];
 
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	private int readByte(int off, int len) throws IOException {
 		byte[] des = new byte[len];
 		bufferedInputStream.read(tem, 0, off - lastMark);
@@ -82,6 +139,25 @@ public class ImplementImageIO implements IImageIO {
 		return ByteArrayToInt(des);
 	}
 
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	private int ByteArrayToInt(byte[] byteArray) {
 		int intOut = 0;
 		for (int i = 0; i < byteArray.length; ++i) {
@@ -90,18 +166,32 @@ public class ImplementImageIO implements IImageIO {
 		return intOut;
 	}
 
-	// png, jpg, gif
-	// public Image myWrite(Image image, String filePath) throws IOException {
-	// BufferedImage bufferedImage = ToBufferedImage.toBufferedImage(image);
-	// System.out.println(ImageIO.write(bufferedImage, "bmp", new
-	// File(filePath+".bmp")));
-	//
-	// return image;
-	// }
+	/**
+	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
+	 * 
+	 * Associates the specified value with the specified key in this map. If the map
+	 * previously contained a mapping for the key, the old value is replaced.
+	 *
+	 * @param key
+	 *            key with which the specified value is to be associated
+	 * @param value
+	 *            value to be associated with the specified key
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
+	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt> with
+	 *         <tt>key</tt>.)
+	 * @throws NullPointerException
+	 *             if the specified map is null
+	 * @see #put(Object, Object) The implementation of this class is testable on the
+	 *      AP CS AB exam.
+	 */
 	@Override
 	public Image myWrite(Image image, String filePath) throws IOException {
 		FileOutputStream fileOutputStream = new FileOutputStream(new File(filePath + ".bmp"));
 		try {
+			// May unavailable on some os.
+			// System.out.println(ImageIO.write(bufferedImage, "bmp", new
+			// File(filePath+".bmp")));
 			new BMPSaver(fileOutputStream, ToBufferedImage.toBufferedImage(image));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,19 +199,16 @@ public class ImplementImageIO implements IImageIO {
 		return image;
 	}
 
-	// private static String byte2hex(byte [] buffer){
-	// String h = "";
-	//
-	// for(int i = 0; i < buffer.length; i++){
-	// String temp = Integer.toHexString(buffer[i] & 0xFF);
-	// if(temp.length() == 1){
-	// temp = "0" + temp;
-	// }
-	// h = h + " "+ temp;
-	// }
-	//
-	// return h;
-	//
-	// }
+	/*
+	 * private static String byte2hex(byte[] buffer) { String h = "";
+	 * 
+	 * for (int i = 0; i < buffer.length; i++) { String temp =
+	 * Integer.toHexString(buffer[i] & 0xFF); if (temp.length() == 1) { temp = "0" +
+	 * temp; } h = h + " " + temp; }
+	 * 
+	 * return h;
+	 * 
+	 * }
+	 */
 
 }

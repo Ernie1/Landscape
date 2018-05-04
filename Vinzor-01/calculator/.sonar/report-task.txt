@@ -1,0 +1,6 @@
+projectKey=16340286-01
+serverUrl=http://localhost:9000
+serverVersion=6.7.3.38370
+dashboardUrl=http://localhost:9000/dashboard/index/16340286-01
+ceTaskId=AWMmQ85vmdb-OKbyyoMS
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWMmQ85vmdb-OKbyyoMS
