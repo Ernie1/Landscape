@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="ImageReader"/>
-	<classpathentry kind="src" path="MazeBug"/>
 	<classpathentry kind="src" path="jar"/>
+	<classpathentry kind="src" path="jigsaw_code/src"/>
+	<classpathentry kind="src" path="src/MazeBug"/>
+	<classpathentry kind="src" path="src/ImageReader"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -11,6 +17,6 @@
 	<classpathentry kind="lib" path="ImageReaderJar/ImageReader.jar"/>
 	<classpathentry kind="lib" path="ImageReaderJar/lib/appframework-1.0.3.jar"/>
 	<classpathentry kind="lib" path="ImageReaderJar/lib/swing-worker-1.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="jigsaw_code/lib/jigsaw.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
