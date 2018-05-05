@@ -48,7 +48,7 @@ public class MazeBug extends Bug {
 	public Stack<Integer> directionRecord = new Stack<>();
 
 	private final int[] dir3 = { Location.LEFT, Location.AHEAD, Location.RIGHT, Location.HALF_CIRCLE };
-	private int[] countDir3 = { 50, 50, 50, 5000 };
+	private double[] countDir3 = { 1, 1, 1, 50000 };
 
 	// 记录本迷宫走到出口所用的步数
 	public Integer stepCount = 0;
@@ -136,8 +136,22 @@ public class MazeBug extends Bug {
 		double proSum = 0;
 		for (int i = 1; i < 5; ++i) {
 			if (crossLocation.peek().get(i) != null) {
-				// System.out.println("countDir3[" + i + "-1]: " + countDir3[i - 1]);
-				proSum += countDir3[i - 1];
+				// System.out.println("countDir3[" + i + "-1]: " + countDir3[i -
+				// 1]);
+				if (i == 2) {
+//					double m = countDir3[0];
+//					if (m < countDir3[2]) {
+//						m = countDir3[2];
+//					}
+//					if (countDir3[1] > 2 * m) {
+//						proSum += 2 * m;
+//					} else {
+						proSum += countDir3[1]*0.25;
+//					}
+				} else {
+					proSum += countDir3[i - 1];
+				}
+
 				proDir3[i - 1] = proSum;
 			}
 		}
@@ -148,8 +162,10 @@ public class MazeBug extends Bug {
 			lastDirection = getDirection();
 			// 根据概率
 			proSum *= Math.random();
-			// System.out.println(proDir3[0]+" "+proDir3[1]+" "+proDir3[2]+" "+proSum);
-			// System.out.println(countDir3[0]+" "+countDir3[1]+" "+countDir3[2]);
+			// System.out.println(proDir3[0]+" "+proDir3[1]+" "+proDir3[2]+"
+			// "+proSum);
+			// System.out.println(countDir3[0]+" "+countDir3[1]+"
+			// "+countDir3[2]);
 			// System.out.println();
 			for (int i = 1; i < 5; ++i) {
 				if (proDir3[i - 1] >= proSum) {
@@ -180,16 +196,16 @@ public class MazeBug extends Bug {
 			tem -= 360;
 		}
 		if (tem == 270) {
-			if (countDir3[0] > 1) {
-				--countDir3[0];
+			if (countDir3[0] > 2) {
+				countDir3[0] -= 1.05;
 			}
 		} else if (tem == 0) {
-			if (countDir3[1] > 1) {
-				--countDir3[1];
+			if (countDir3[1] > 2) {
+				countDir3[1] -= 1.05;
 			}
 		} else if (tem == 90) {
-			if (countDir3[2] > 1) {
-				--countDir3[2];
+			if (countDir3[2] > 2) {
+				countDir3[2] -= 1.05;
 			}
 		}
 
@@ -201,21 +217,22 @@ public class MazeBug extends Bug {
 	/**
 	 * NOTE: This comment is fake. WHY: Just for sonar test. :)
 	 * 
-	 * Associates the specified value with the specified key in this map. If the map
-	 * previously contained a mapping for the key, the old value is replaced.
+	 * Associates the specified value with the specified key in this map. If the
+	 * map previously contained a mapping for the key, the old value is
+	 * replaced.
 	 *
 	 * @param key
 	 *            key with which the specified value is to be associated
 	 * @param value
 	 *            value to be associated with the specified key
-	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if
-	 *         there was no mapping for <tt>key</tt>. (A <tt>null</tt> return can
-	 *         also indicate that the map previously associated <tt>null</tt> with
-	 *         <tt>key</tt>.)
+	 * @return the previous value associated with <tt>key</tt>, or <tt>null</tt>
+	 *         if there was no mapping for <tt>key</tt>. (A <tt>null</tt> return
+	 *         can also indicate that the map previously associated
+	 *         <tt>null</tt> with <tt>key</tt>.)
 	 * @throws NullPointerException
 	 *             if the specified map is null
-	 * @see #put(Object, Object) The implementation of this class is testable on the
-	 *      AP CS AB exam.
+	 * @see #put(Object, Object) The implementation of this class is testable on
+	 *      the AP CS AB exam.
 	 */
 	private void setNext() {
 		Grid<Actor> gr = getGrid();
@@ -264,7 +281,8 @@ public class MazeBug extends Bug {
 	 * occupied. 如何行走
 	 */
 	public void move() {
-		// System.out.println(countDir3[0] + " " + countDir3[1] + " " + countDir3[2]);
+		// System.out.println(countDir3[0] + " " + countDir3[1] + " " +
+		// countDir3[2]);
 
 		Grid<Actor> gr = getGrid();
 		if (gr == null) {
