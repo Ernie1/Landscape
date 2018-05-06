@@ -9,7 +9,7 @@ int main(){
         int pid2=fork();
         printf("**2**\n");
         if(pid1==0){
-                int pid3=fork();
+                int pid3=vfork();
 		  
                 printf("**3**\n");
         }
